@@ -6,7 +6,7 @@ The first one is a wrapper for standard HTML5 WebWorker and it provides a lot of
 The second one is a singleton to register different Ext.ux.WebWorker and it provides functions to work with every registered webworker at the same time.
 
 ## Usage
-Load Ext.ux.WebWorker and Ext.ux.WebWorkerManager via Ext.require:
+Load `Ext.ux.WebWorker` and `Ext.ux.WebWorkerManager` via `Ext.require`:
 
 ```javascript
 Ext.Loader.setConfig ({
