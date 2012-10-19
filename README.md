@@ -1,7 +1,8 @@
 # ExtJS-WebWorker
 
 ExtJS-WebWorker is an extension to handle and use the HTML5 WebWorker with ExtJS.
-It has two classes: **Ext.ux.WebWorker** and **Ext.ux.WebWorkerManager**
+
+It has two classes: `Ext.ux.WebWorker` and `Ext.ux.WebWorkerManager`<br/>
 The first one is a wrapper for standard HTML5 WebWorker and it provides a lot of interesting and easy-to-use features.
 The second one is a singleton to register different Ext.ux.WebWorker and it provides functions to work with every registered webworker at the same time.
 
