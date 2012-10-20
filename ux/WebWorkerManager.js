@@ -6,6 +6,54 @@
  * Manager of Ext.ux.WebWorker
  * 
  * This singleton provide some useful functions to use for many webworkers.
+ *
+ *     var ww1 = Ext.create ('Ext.ux.WebWorker', {
+ *       file: 'myWorker.js'
+ *     });
+ *     
+ *     Ext.ux.WebWorkerManager.register (ww1);
+ *     
+ *     var blob = [
+ *       'onmessage = function (msg) {' ,
+ *       '	if (msg.event === "system shutdown") {' ,
+ *       '		var res = {' ,
+ *       '			event: "stop" ,' ,
+ *       '			data: "Computation of worker 2 terminates correctly in 15h13m20s."' ,
+ *       '		};' ,
+ *       '		postMessage (res);' ,
+ *       '	}' ,
+ *       '}'
+ *     ].join ('');
+ *     
+ *     var ww2 = Ext.create ('Ext.ux.WebWorker', {
+ *       blob: blob
+ *     });
+ *     
+ *     Ext.ux.WebWorkerManager.register (ww2);
+ *     
+ *     var ww3 = Ext.create ('Ext.ux.WebWorker', {
+ *     file: 'otherWorker.js'
+ *     });
+ *     
+ *     Ext.ux.WebWorkerManager.register (ww3);
+ *     
+ *     Ext.ux.WebWorkerManager.listen ('stop', function (ww, data) {
+ *       Ext.Msg.show ({
+ *         title: 'Worker stopped' ,
+ *         msg: 'Log of the computation: ' + data ,
+ *         icon: Ext.Msg.INFO ,
+ *         buttons: Ext.Msg.OK
+ *       });
+ *     });
+ *     
+ *     // This will handled by everyone
+ *     Ext.ux.WebWorkerManager.broadcast ('system shutdown', 'BROADCAST: the system will shutdown in few minutes.');
+ *     
+ *     Ext.ux.WebWorkerManager.stopAll ();
+ *     
+ *     Ext.ux.WebWorkerManager.unregister (ww1);
+ *     Ext.ux.WebWorkerManager.unregister (ww2);
+ *     Ext.ux.WebWorkerManager.unregister (ww3);
  */
 Ext.define ('Ext.ux.WebWorkerManager', {
 	singleton: true ,

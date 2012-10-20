@@ -5,6 +5,73 @@
  * Wrapper for HTML5 WebWorker
  * 
  * This class provide an interface for HTML5 WebWorker.
+ *
+ * <h1>Pure text communication</h1>
+ * The communication is text-only, without objects or any other kind of data.
+ *
+ *     var webworker = Ext.create ('Ext.ux.WebWorker', {
+ *       file: 'myWorker.js' ,
+ *       listeners: {
+ *         message: function (ww, message) {
+ *           console.log ('A new message is arrived: ' + message);
+ *         } ,
+ *         error: function (ww, error) {
+ *           Ext.Error.raise (error);
+ *         }
+ *       }
+ *     });
+ *
+ * <h1>Pure event-driven communication</h1>
+ * The communication is event-driven: an event and a String or Object are sent and the webworker handles different events.
+ *
+ *     var webworker = Ext.create ('Ext.ux.WebWorker', {
+ *       file: 'myWorker.js' ,
+ *       listeners: {
+ *         message: function (ww, message) {
+ *           ww.send ('parse', 'a string to parse');
+ *           ww.send ('verify equation', {
+ *             equation: 'x+y-z=10' ,
+ *             x: 10 ,
+ *             y: 5 ,
+ *             z: 5
+ *           });
+ *         }
+ *       }
+ *     });
+ *     
+ *     // A 'terminate' event is sent from the worker (myWorker.js)
+ *     // 'data' has 'log' and 'msg' fields
+ *     webworker.on ('terminate', function (data) {
+ *       console.log ('Log: ' + data.log);
+ *       console.log ('Message: ' + data.msg);
+ *     });
+ *
+ * <h1Mixed communication</h1>
+ * The communication is mixed: it can handles text-only and event-driven communication.
+ *
+ *     var webworker = Ext.create ('Ext.ux.WebWorker', {
+ *       file: 'myWorker.js' ,
+ *       listeners: {
+ *         message: function (ww, message) {
+ *           console.log ('Text-only message arrived is: ' + message);
+ *           
+ *           ww.send ('parse', 'a string to parse');
+ *           ww.send ('verify equation', {
+ *             equation: 'x+y-z=10' ,
+ *             x: 10 ,
+ *             y: 5 ,
+ *             z: 5
+ *           });
+ *         }
+ *       }
+ *     });
+ *     
+ *     // A 'terminate' event is sent from the worker (myWorker.js)
+ *     // 'data' has 'log' and 'msg' fields
+ *     webworker.on ('terminate', function (data) {
+ *       console.log ('Log: ' + data.log);
+ *       console.log ('Message: ' + data.msg);
+ *     });
  */
 Ext.define ('Ext.ux.WebWorker', {
 	alias: 'widget.webworker' ,
