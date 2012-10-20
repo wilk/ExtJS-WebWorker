@@ -22,7 +22,12 @@ Ext.define ('Ext.ux.WebWorker', {
 		/**
 		 * @cfg {String} file A separated that contains the worker. Use only this or blob.
 		 */
-		file: ''
+		file: '' ,
+		
+		/**
+		 * @cfg {String} itemId A further id specified by the user.
+		 */
+		itemId: ''
 	} ,
 	
 	/**
@@ -88,13 +93,15 @@ Ext.define ('Ext.ux.WebWorker', {
 			me.id = Ext.id ();
 			
 			me.worker.onmessage = function (message) {
-				if (Ext.isString (message.data)) me.fireEvent ('message', me, message.data);
+				// Message event is always sent
+				me.fireEvent ('message', me, message.data);
+				
 				/*
 					message.data : object
 					msg.event : event to raise
 					msg.data : data to handle
 				*/
-				else me.fireEvent (message.data.event, me, message.data.data);
+				if (Ext.isObject (message.data)) me.fireEvent (message.data.event, me, message.data.data);
 			}
 			
 			me.worker.onerror = function (message) {
