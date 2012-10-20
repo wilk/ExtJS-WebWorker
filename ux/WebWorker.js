@@ -85,7 +85,7 @@ Ext.define ('Ext.ux.WebWorker', {
 				me.worker = new Worker (me.file);
 			}
 			
-			me.worker.id = Ext.id ();
+			me.id = Ext.id ();
 			
 			me.worker.onmessage = function (message) {
 				if (Ext.isString (message.data)) me.fireEvent ('message', me, message.data);
