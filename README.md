@@ -52,6 +52,9 @@ var webworker = Ext.create ('Ext.ux.WebWorker', {
 		}
 	}
 });
+
+// myWorker.js
+postMessage ('this is the message!');
 ```
 
 ### Pure event-driven communication
@@ -61,9 +64,12 @@ The communication is event-driven: an event and a String or Object are sent and 
 var webworker = Ext.create ('Ext.ux.WebWorker', {
 	file: 'myWorker.js' ,
 	listeners: {
-		message: function (ww, message) {
-			console.log ('A new message is arrived: ' + message);
+		start: function (ww, message) {
+			console.log (message);
 			ww.send ('parse', 'a string to parse');
+		} ,
+		verify: function (ww, message) {
+			console.log (message);
 			ww.send ('verify equation', {
 				equation: 'x+y-z=10' ,
 				x: 10 ,
@@ -80,10 +86,42 @@ webworker.on ('terminate', function (data) {
 	console.log ('Log: ' + data.log);
 	console.log ('Message: ' + data.msg);
 });
+
+webworker.send ({
+	event: 'start'
+});
+
+// myWorker.js
+onmessage = function (message) {
+	switch (message.event) {
+		case 'start':
+			postMessage ({
+				event: 'start' ,
+				data: 'WebWorker started!'
+			});
+			break;
+		case 'parse':
+			postMessage ({
+				event: 'verify' ,
+				data: 'String parsed! Next!'
+			});
+			break;
+		case 'verify equation':
+			postMessage ({
+				event: 'terminate' ,
+				data: {
+					log: message.data.x + '+' + message.data.y + '-' + message.data.z + '=10' ,
+					msg: 'Equation verified! Terminate!'
+				}
+			});
+			close ();
+			break;
+	}
+}
 ```
 
 ### Mixed communication
-The communication is mixed: it can handles text-only and event-driven communication.
+The communication is mixed: it handles text-only and event-driven communication.
 
 ```javascript
 var webworker = Ext.create ('Ext.ux.WebWorker', {
@@ -91,24 +129,23 @@ var webworker = Ext.create ('Ext.ux.WebWorker', {
 	listeners: {
 		message: function (ww, message) {
 			console.log ('Text-only message arrived is: ' + message);
-			
-			ww.send ('parse', 'a string to parse');
-			ww.send ('verify equation', {
-				equation: 'x+y-z=10' ,
-				x: 10 ,
-				y: 5 ,
-				z: 5
-			});
 		}
 	}
 });
 
-// A 'terminate' event is sent from the worker (myWorker.js)
-// 'data' has 'log' and 'msg' fields
-webworker.on ('terminate', function (data) {
-	console.log ('Log: ' + data.log);
-	console.log ('Message: ' + data.msg);
+webworker.send ({
+	event: 'echo' ,
+	data: 'Send me a pure-text message plz!'
 });
+
+// myWorker.js
+onmessage = function (message) {
+	switch (message.event) {
+		case 'echo':
+			postMessage (message.data);
+			break;
+	}
+}
 ```
 
 ## Ext.ux.WebWorkerManager features
@@ -154,7 +191,7 @@ Ext.ux.WebWorkerManager.listen ('stop', function (ww, data) {
 	});
 });
 
-// This will handled by everyone
+// This will be handled by everyone
 Ext.ux.WebWorkerManager.broadcast ('system shutdown', 'BROADCAST: the system will shutdown in few minutes.');
 
 Ext.ux.WebWorkerManager.stopAll ();
@@ -165,7 +202,7 @@ Ext.ux.WebWorkerManager.unregister (ww3);
 ```
 
 ## Run the demo
-**Under construction**
+Go to *http://localhost/ExtJS-WebWorker/demo* and play it!
 
 ## Documentation
 You can build the documentation (like ExtJS Docs) with [**jsduck**](https://github.com/senchalabs/jsduck):
