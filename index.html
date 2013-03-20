@@ -1,0 +1,274 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>ExtJS WebWorker by wilk</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>ExtJS WebWorker</h1>
+        <p>Ext.ux.WebWorker is an extension to manage HTML5 WebWorker with ExtJS and Sencha Touch</p>
+
+        <p class="view"><a href="https://github.com/wilk/ExtJS-WebWorker">View the Project on GitHub <small>wilk/ExtJS-WebWorker</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/wilk/ExtJS-WebWorker/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/wilk/ExtJS-WebWorker/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/wilk/ExtJS-WebWorker">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>ExtJS-WebWorker</h1>
+
+<p>ExtJS-WebWorker is an extension to handle and use the HTML5 WebWorker with ExtJS and Sencha Touch.</p>
+
+<p>It has two classes: <code>Ext.ux.WebWorker</code> and <code>Ext.ux.WebWorkerManager</code><br>
+The first one is a wrapper for standard HTML5 WebWorker and it provides a lot of interesting and easy-to-use features.
+The second one is a singleton to register different Ext.ux.WebWorker and it provides functions to work with every registered webworker at the same time.</p>
+
+<h2>Usage</h2>
+
+<p>Load <code>Ext.ux.WebWorker</code> and <code>Ext.ux.WebWorkerManager</code> via <code>Ext.require</code>:</p>
+
+<div class="highlight"><pre><span class="nx">Ext</span><span class="p">.</span><span class="nx">Loader</span><span class="p">.</span><span class="nx">setConfig</span> <span class="p">({</span>
+    <span class="nx">enabled</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="nx">Ext</span><span class="p">.</span><span class="nx">require</span> <span class="p">([</span><span class="s1">'Ext.ux.WebWorker'</span><span class="p">,</span> <span class="s1">'Ext.ux.WebWorkerManager'</span><span class="p">]);</span>
+</pre></div>
+
+<p>Now, you are ready to use them in your code as follows:</p>
+
+<div class="highlight"><pre><span class="c1">// There are two ways to create a worker: from a file or inline.</span>
+
+<span class="c1">// Build a worker from a different file</span>
+<span class="kd">var</span> <span class="nx">ww</span> <span class="o">=</span> <span class="nx">Ext</span><span class="p">.</span><span class="nx">create</span> <span class="p">(</span><span class="s1">'Ext.ux.WebWorker'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">file</span><span class="o">:</span> <span class="s1">'myWorker.js'</span>
+<span class="p">});</span>
+
+<span class="c1">// Build a worker inline</span>
+<span class="kd">var</span> <span class="nx">ww</span> <span class="o">=</span> <span class="nx">Ext</span><span class="p">.</span><span class="nx">create</span> <span class="p">(</span><span class="s1">'Ext.ux.WebWorker'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">blob</span><span class="o">:</span> <span class="s1">'onmessage = function (e) {postMessage ("A message from worker: + " e.data);}'</span>
+<span class="p">});</span>
+
+<span class="c1">// Using Ext.ux.WebWebWorkerManager</span>
+<span class="nx">Ext</span><span class="p">.</span><span class="nx">ux</span><span class="p">.</span><span class="nx">WebWorkerManager</span><span class="p">.</span><span class="nx">register</span> <span class="p">(</span><span class="nx">ww</span><span class="p">);</span>
+</pre></div>
+
+<h2>Communications supported</h2>
+
+<h3>Pure text communication</h3>
+
+<p>The communication is text-only, without objects or any other kind of data.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">webworker</span> <span class="o">=</span> <span class="nx">Ext</span><span class="p">.</span><span class="nx">create</span> <span class="p">(</span><span class="s1">'Ext.ux.WebWorker'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">file</span><span class="o">:</span> <span class="s1">'myWorker.js'</span> <span class="p">,</span>
+    <span class="nx">listeners</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">message</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ww</span><span class="p">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="p">(</span><span class="s1">'A new message is arrived: '</span> <span class="o">+</span> <span class="nx">message</span><span class="p">);</span>
+        <span class="p">}</span> <span class="p">,</span>
+        <span class="nx">error</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ww</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">Ext</span><span class="p">.</span><span class="nb">Error</span><span class="p">.</span><span class="nx">raise</span> <span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="c1">// myWorker.js</span>
+<span class="nx">postMessage</span> <span class="p">(</span><span class="s1">'this is the message!'</span><span class="p">);</span>
+</pre></div>
+
+<h3>Pure event-driven communication</h3>
+
+<p>The communication is event-driven: an event and a String or Object are sent and the webworker handles different events.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">webworker</span> <span class="o">=</span> <span class="nx">Ext</span><span class="p">.</span><span class="nx">create</span> <span class="p">(</span><span class="s1">'Ext.ux.WebWorker'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">file</span><span class="o">:</span> <span class="s1">'myWorker.js'</span> <span class="p">,</span>
+    <span class="nx">listeners</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">start</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ww</span><span class="p">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+            <span class="nx">ww</span><span class="p">.</span><span class="nx">send</span> <span class="p">(</span><span class="s1">'parse'</span><span class="p">,</span> <span class="s1">'a string to parse'</span><span class="p">);</span>
+        <span class="p">}</span> <span class="p">,</span>
+        <span class="nx">verify</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ww</span><span class="p">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+            <span class="nx">ww</span><span class="p">.</span><span class="nx">send</span> <span class="p">(</span><span class="s1">'verify equation'</span><span class="p">,</span> <span class="p">{</span>
+                <span class="nx">equation</span><span class="o">:</span> <span class="s1">'x+y-z=10'</span> <span class="p">,</span>
+                <span class="nx">x</span><span class="o">:</span> <span class="mi">10</span> <span class="p">,</span>
+                <span class="nx">y</span><span class="o">:</span> <span class="mi">5</span> <span class="p">,</span>
+                <span class="nx">z</span><span class="o">:</span> <span class="mi">5</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="c1">// A 'terminate' event is sent from the worker (myWorker.js)</span>
+<span class="c1">// 'data' has 'log' and 'msg' fields</span>
+<span class="nx">webworker</span><span class="p">.</span><span class="nx">on</span> <span class="p">(</span><span class="s1">'terminate'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="p">(</span><span class="s1">'Log: '</span> <span class="o">+</span> <span class="nx">data</span><span class="p">.</span><span class="nx">log</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="p">(</span><span class="s1">'Message: '</span> <span class="o">+</span> <span class="nx">data</span><span class="p">.</span><span class="nx">msg</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">webworker</span><span class="p">.</span><span class="nx">send</span> <span class="p">({</span>
+    <span class="nx">event</span><span class="o">:</span> <span class="s1">'start'</span>
+<span class="p">});</span>
+
+<span class="c1">// myWorker.js</span>
+<span class="nx">onmessage</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="nx">message</span><span class="p">.</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="s1">'start'</span><span class="o">:</span>
+            <span class="nx">postMessage</span> <span class="p">({</span>
+                <span class="nx">event</span><span class="o">:</span> <span class="s1">'start'</span> <span class="p">,</span>
+                <span class="nx">data</span><span class="o">:</span> <span class="s1">'WebWorker started!'</span>
+            <span class="p">});</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="s1">'parse'</span><span class="o">:</span>
+            <span class="nx">postMessage</span> <span class="p">({</span>
+                <span class="nx">event</span><span class="o">:</span> <span class="s1">'verify'</span> <span class="p">,</span>
+                <span class="nx">data</span><span class="o">:</span> <span class="s1">'String parsed! Next!'</span>
+            <span class="p">});</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="s1">'verify equation'</span><span class="o">:</span>
+            <span class="nx">postMessage</span> <span class="p">({</span>
+                <span class="nx">event</span><span class="o">:</span> <span class="s1">'terminate'</span> <span class="p">,</span>
+                <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+                    <span class="nx">log</span><span class="o">:</span> <span class="nx">message</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="s1">'+'</span> <span class="o">+</span> <span class="nx">message</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="s1">'-'</span> <span class="o">+</span> <span class="nx">message</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">z</span> <span class="o">+</span> <span class="s1">'=10'</span> <span class="p">,</span>
+                    <span class="nx">msg</span><span class="o">:</span> <span class="s1">'Equation verified! Terminate!'</span>
+                <span class="p">}</span>
+            <span class="p">});</span>
+            <span class="nx">close</span> <span class="p">();</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>Mixed communication</h3>
+
+<p>The communication is mixed: it handles text-only and event-driven communication.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">webworker</span> <span class="o">=</span> <span class="nx">Ext</span><span class="p">.</span><span class="nx">create</span> <span class="p">(</span><span class="s1">'Ext.ux.WebWorker'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">file</span><span class="o">:</span> <span class="s1">'myWorker.js'</span> <span class="p">,</span>
+    <span class="nx">listeners</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">message</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ww</span><span class="p">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="p">(</span><span class="s1">'Text-only message arrived is: '</span> <span class="o">+</span> <span class="nx">message</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">webworker</span><span class="p">.</span><span class="nx">send</span> <span class="p">({</span>
+    <span class="nx">event</span><span class="o">:</span> <span class="s1">'echo'</span> <span class="p">,</span>
+    <span class="nx">data</span><span class="o">:</span> <span class="s1">'Send me a pure-text message plz!'</span>
+<span class="p">});</span>
+
+<span class="c1">// myWorker.js</span>
+<span class="nx">onmessage</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="nx">message</span><span class="p">.</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="s1">'echo'</span><span class="o">:</span>
+            <span class="nx">postMessage</span> <span class="p">(</span><span class="nx">message</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>Ext.ux.WebWorkerManager features</h2>
+
+<p>Here's an example of the manager:</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">ww1</span> <span class="o">=</span> <span class="nx">Ext</span><span class="p">.</span><span class="nx">create</span> <span class="p">(</span><span class="s1">'Ext.ux.WebWorker'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">file</span><span class="o">:</span> <span class="s1">'myWorker.js'</span>
+<span class="p">});</span>
+
+<span class="nx">Ext</span><span class="p">.</span><span class="nx">ux</span><span class="p">.</span><span class="nx">WebWorkerManager</span><span class="p">.</span><span class="nx">register</span> <span class="p">(</span><span class="nx">ww1</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">blob</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'onmessage = function (msg) {'</span> <span class="p">,</span>
+    <span class="s1">'   if (msg.event === "system shutdown") {'</span> <span class="p">,</span>
+    <span class="s1">'       var res = {'</span> <span class="p">,</span>
+    <span class="s1">'           event: "stop" ,'</span> <span class="p">,</span>
+    <span class="s1">'           data: "Computation of worker 2 terminates correctly in 15h13m20s."'</span> <span class="p">,</span>
+    <span class="s1">'       };'</span> <span class="p">,</span>
+    <span class="s1">'       postMessage (res);'</span> <span class="p">,</span>
+    <span class="s1">'   }'</span> <span class="p">,</span>
+    <span class="s1">'}'</span>
+<span class="p">].</span><span class="nx">join</span> <span class="p">(</span><span class="s1">''</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">ww2</span> <span class="o">=</span> <span class="nx">Ext</span><span class="p">.</span><span class="nx">create</span> <span class="p">(</span><span class="s1">'Ext.ux.WebWorker'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">blob</span><span class="o">:</span> <span class="nx">blob</span>
+<span class="p">});</span>
+
+<span class="nx">Ext</span><span class="p">.</span><span class="nx">ux</span><span class="p">.</span><span class="nx">WebWorkerManager</span><span class="p">.</span><span class="nx">register</span> <span class="p">(</span><span class="nx">ww2</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">ww3</span> <span class="o">=</span> <span class="nx">Ext</span><span class="p">.</span><span class="nx">create</span> <span class="p">(</span><span class="s1">'Ext.ux.WebWorker'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">file</span><span class="o">:</span> <span class="s1">'otherWorker.js'</span>
+<span class="p">});</span>
+
+<span class="nx">Ext</span><span class="p">.</span><span class="nx">ux</span><span class="p">.</span><span class="nx">WebWorkerManager</span><span class="p">.</span><span class="nx">register</span> <span class="p">(</span><span class="nx">ww3</span><span class="p">);</span>
+
+<span class="nx">Ext</span><span class="p">.</span><span class="nx">ux</span><span class="p">.</span><span class="nx">WebWorkerManager</span><span class="p">.</span><span class="nx">listen</span> <span class="p">(</span><span class="s1">'stop'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ww</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Ext</span><span class="p">.</span><span class="nx">Msg</span><span class="p">.</span><span class="nx">show</span> <span class="p">({</span>
+        <span class="nx">title</span><span class="o">:</span> <span class="s1">'Worker stopped'</span> <span class="p">,</span>
+        <span class="nx">msg</span><span class="o">:</span> <span class="s1">'Log of the computation: '</span> <span class="o">+</span> <span class="nx">data</span> <span class="p">,</span>
+        <span class="nx">icon</span><span class="o">:</span> <span class="nx">Ext</span><span class="p">.</span><span class="nx">Msg</span><span class="p">.</span><span class="nx">INFO</span> <span class="p">,</span>
+        <span class="nx">buttons</span><span class="o">:</span> <span class="nx">Ext</span><span class="p">.</span><span class="nx">Msg</span><span class="p">.</span><span class="nx">OK</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+
+<span class="c1">// This will be handled by everyone</span>
+<span class="nx">Ext</span><span class="p">.</span><span class="nx">ux</span><span class="p">.</span><span class="nx">WebWorkerManager</span><span class="p">.</span><span class="nx">broadcast</span> <span class="p">(</span><span class="s1">'system shutdown'</span><span class="p">,</span> <span class="s1">'BROADCAST: the system will shutdown in few minutes.'</span><span class="p">);</span>
+
+<span class="nx">Ext</span><span class="p">.</span><span class="nx">ux</span><span class="p">.</span><span class="nx">WebWorkerManager</span><span class="p">.</span><span class="nx">stopAll</span> <span class="p">();</span>
+
+<span class="nx">Ext</span><span class="p">.</span><span class="nx">ux</span><span class="p">.</span><span class="nx">WebWorkerManager</span><span class="p">.</span><span class="nx">unregister</span> <span class="p">(</span><span class="nx">ww1</span><span class="p">);</span>
+<span class="nx">Ext</span><span class="p">.</span><span class="nx">ux</span><span class="p">.</span><span class="nx">WebWorkerManager</span><span class="p">.</span><span class="nx">unregister</span> <span class="p">(</span><span class="nx">ww2</span><span class="p">);</span>
+<span class="nx">Ext</span><span class="p">.</span><span class="nx">ux</span><span class="p">.</span><span class="nx">WebWorkerManager</span><span class="p">.</span><span class="nx">unregister</span> <span class="p">(</span><span class="nx">ww3</span><span class="p">);</span>
+</pre></div>
+
+<h2>Run the demo</h2>
+
+<p>Go to <em>http://localhost/ExtJS-WebWorker/demo</em> and play it!</p>
+
+<h2>Documentation</h2>
+
+<p>You can build the documentation (like ExtJS Docs) with <a href="https://github.com/senchalabs/jsduck"><strong>jsduck</strong></a>:</p>
+
+<div class="highlight"><pre><span class="nv">$ </span>jsduck ux --output /var/www/docs
+</pre></div>
+
+<p>It will make the documentation into docs dir and it will be visible at: http://localhost/docs</p>
+
+<h2>License</h2>
+
+<p>(GNU GPLv3)</p>
+
+<p>Copyright (c) 2012 Vincenzo Ferrari <a href="mailto:wilk3ert@gmail.com">wilk3ert@gmail.com</a></p>
+
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/wilk">wilk</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
