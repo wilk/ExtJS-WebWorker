@@ -141,20 +141,16 @@ Ext.define ('Ext.ux.WebWorker', {
 		
 		try {
 			// Makes inline worker
-			if (Ext.isEmpty (me.file)) {
-				var BlobBuilder = window.MozBlobBuilder	|| window.WebKitBlobBuilder;
-				var winURL = window.URL || window.webkitURL;
-				
-				var bb = new BlobBuilder ();
-				bb.append (me.blob);
-				var blob = bb.getBlob ();
-				var inlineFile = winURL.createObjectURL (blob);
+			if (Ext.isEmpty (me.getFile ())) {
+				var winURL = window.URL || window.webkitURL ,				
+					blob = new Blob ([me.getBlob ()], {type: 'text/plain'}) ,
+					inlineFile = winURL.createObjectURL (blob);
 				
 				me.worker = new Worker (inlineFile);
 			}
 			// Uses file
 			else {
-				me.worker = new Worker (me.file);
+				me.worker = new Worker (me.getFile ());
 			}
 			
 			me.id = Ext.id ();
