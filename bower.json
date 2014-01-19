@@ -1,6 +1,6 @@
 {
   "name": "Ext.ux.WebWorker",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "https://github.com/wilk/ExtJS-WebWorker",
   "authors": [
     "Vincenzo (Wilk) Ferrari <wilk3ert@gmail.com>"
@@ -23,8 +23,8 @@
     "bower_components",
     "test",
     "tests",
-    "demo/*.*",
-    "ux/*.*",
+    "demo",
+    "ux",
     "Gruntfile.js",
     "*.*~"
   ]
