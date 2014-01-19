@@ -23,9 +23,10 @@
     "bower_components",
     "test",
     "tests",
+    "demo/",
     "demo",
     "ux",
     "Gruntfile.js",
-    "*.*~"
+    "**/*.*~"
   ]
 }
