@@ -1,6 +1,7 @@
 Ext.Loader.setConfig ({
 	paths: {
-		'Ext': '..'
+		'Ext.ux.WebWorker': '../WebWorker.js' ,
+		'Ext.ux.WebWorkerManager': '../WebWorkerManager.js'
 	} ,
 	enabled: true
 });
