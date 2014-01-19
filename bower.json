@@ -1,0 +1,30 @@
+{
+  "name": "Ext.ux.WebWorker",
+  "version": "0.0.0",
+  "homepage": "https://github.com/wilk/ExtJS-WebWorker",
+  "authors": [
+    "Vincenzo (Wilk) Ferrari <wilk3ert@gmail.com>"
+  ],
+  "description": "HTML5 WebWorker wrapper for ExtJS and Sencha Touch",
+  "main": ["WebWorker.js", "WebWorker.min.js", "WebWorkerManager.js", "WebWorkerManager.min.js"],
+  "keywords": [
+    "extjs",
+    "senchatouch",
+    "sencha",
+    "html5",
+    "webworker"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "package.json",
+    "node_modules",
+    "bower.json",
+    "bower_components",
+    "test",
+    "tests",
+    "demo",
+    "Gruntfile.js",
+    "*.*~"
+  ]
+}
