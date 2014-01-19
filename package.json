@@ -1,0 +1,32 @@
+{
+  "name": "Ext.ux.WebWorker",
+  "version": "0.0.0",
+  "description": "HTML5 WebWorker wrapper for ExtJS and SenchaTouch",
+  "main": "WebWorker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wilk/ExtJS-WebWorker.git"
+  },
+  "keywords": [
+    "extjs",
+    "senchatouch",
+    "sencha",
+    "webworker",
+    "html5"
+  ],
+  "author": "Vincenzo <wilk3ert@gmail.com> (Wilk)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wilk/ExtJS-WebWorker/issues"
+  },
+  "homepage": "https://github.com/wilk/ExtJS-WebWorker",
+  "dependencies": {
+    "load-grunt-tasks": "~0.2.1",
+    "grunt": "~0.4.2",
+    "grunt-contrib-uglify": "~0.3.0",
+    "grunt-contrib-jshint": "~0.8.0"
+  }
+}
