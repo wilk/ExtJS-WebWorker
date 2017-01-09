@@ -1,10 +1,41 @@
 # ExtJS-WebWorker
 
+# This library is no longer mainteined.
+
 ExtJS-WebWorker is an extension to handle and use the HTML5 WebWorker with ExtJS and Sencha Touch.
 
 It has two classes: `Ext.ux.WebWorker` and `Ext.ux.WebWorkerManager`<br/>
 The first one is a wrapper for standard HTML5 WebWorker and it provides a lot of interesting and easy-to-use features.
 The second one is a singleton to register different Ext.ux.WebWorker and it provides functions to work with every registered webworker at the same time.
+
+## Install via Bower
+First of all, install [**Bower**](http://bower.io/).
+
+Then install `Ext.ux.WebWorker`:
+
+```bash
+$ bower install ext.ux.webworker
+```
+
+Now, you got the extension at the following path: *YOUR_PROJECT_PATH/bower_components/ext.ux.webworker/*
+
+It contains **WebWorker.js** and **WebWorkerManager.js** files and a minified version **WebWorker.min.js** and **WebWorkerManager.min.js**.
+
+Let's setup the **Ext.Loader** to require the right file:
+
+```javascript
+Ext.Loader.setConfig ({
+	enabled: true ,
+	paths: {
+		'Ext.ux.WebWorker': 'bower_components/ext.ux.webworker/WebWorker.js' ,
+		// or the minified one: 'Ext.ux.WebWorker': 'bower_components/ext.ux.webworker/WebWorker.min.js'
+		'Ext.ux.WebWorkerManager': 'bower_components/ext.ux.webworker/WebWorkerManager.js' ,
+		// or the minified one: 'Ext.ux.WebWorkerManager': 'bower_components/ext.ux.webworker/WebWorkerManager.min.js'
+	}
+});
+
+Ext.require (['Ext.ux.WebWorker', 'Ext.ux.WebWorkerManager']);
+```
 
 ## Usage
 Load `Ext.ux.WebWorker` and `Ext.ux.WebWorkerManager` via `Ext.require`:
