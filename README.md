@@ -1,5 +1,7 @@
 # ExtJS-WebWorker
 
+# This library is no longer mainteined.
+
 ExtJS-WebWorker is an extension to handle and use the HTML5 WebWorker with ExtJS and Sencha Touch.
 
 It has two classes: `Ext.ux.WebWorker` and `Ext.ux.WebWorkerManager`<br/>
